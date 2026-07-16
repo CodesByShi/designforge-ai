@@ -3,14 +3,11 @@
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
 import { copyToClipboard, cn } from "@/lib/utils";
-import type { HighlighterGeneric } from "shiki";
 
-type Highlighter = HighlighterGeneric<string, string>;
-
-let highlighterPromise: Promise<Highlighter> | null = null;
+let highlighterPromise: Promise<any> | null = null;
 
 /** Lazily creates (and caches) a single Shiki highlighter for the app's lifetime. */
-function getShikiHighlighter(): Promise<Highlighter> {
+function getShikiHighlighter(): Promise<any> {
   if (!highlighterPromise) {
     highlighterPromise = import("shiki").then((shiki) =>
       shiki.createHighlighter({
@@ -19,6 +16,7 @@ function getShikiHighlighter(): Promise<Highlighter> {
       })
     );
   }
+
   return highlighterPromise;
 }
 
@@ -30,17 +28,29 @@ export interface CodeBlockProps {
 }
 
 /** Syntax-highlighted code panel (Shiki) with a copy button + success animation. */
-export function CodeBlock({ code, lang = "tsx", className, filename }: CodeBlockProps) {
+export function CodeBlock({
+  code,
+  lang = "tsx",
+  className,
+  filename,
+}: CodeBlockProps) {
   const [html, setHtml] = React.useState<string | null>(null);
   const [copied, setCopied] = React.useState(false);
 
   React.useEffect(() => {
     let cancelled = false;
+
     getShikiHighlighter().then((highlighter) => {
       if (cancelled) return;
-      const out = highlighter.codeToHtml(code, { lang, theme: "github-dark-default" });
+
+      const out = highlighter.codeToHtml(code, {
+        lang,
+        theme: "github-dark-default",
+      });
+
       setHtml(out);
     });
+
     return () => {
       cancelled = true;
     };
@@ -48,6 +58,7 @@ export function CodeBlock({ code, lang = "tsx", className, filename }: CodeBlock
 
   async function handleCopy() {
     const ok = await copyToClipboard(code);
+
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
@@ -55,12 +66,18 @@ export function CodeBlock({ code, lang = "tsx", className, filename }: CodeBlock
   }
 
   return (
-    <div className={cn("relative overflow-hidden rounded-sf border border-graphite-border bg-[#0d1117]", className)}>
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-sf border border-graphite-border bg-[#0d1117]",
+        className
+      )}
+    >
       {filename && (
         <div className="flex items-center justify-between border-b border-graphite-border px-4 py-2 text-xs text-paper-dim font-mono">
           {filename}
         </div>
       )}
+
       <button
         onClick={handleCopy}
         aria-label={copied ? "Copied" : "Copy code"}
@@ -68,14 +85,17 @@ export function CodeBlock({ code, lang = "tsx", className, filename }: CodeBlock
       >
         {copied ? (
           <>
-            <Check className="h-3.5 w-3.5 text-emerald-400" /> Copied
+            <Check className="h-3.5 w-3.5 text-emerald-400" />
+            Copied
           </>
         ) : (
           <>
-            <Copy className="h-3.5 w-3.5" /> Copy
+            <Copy className="h-3.5 w-3.5" />
+            Copy
           </>
         )}
       </button>
+
       <div className="scrollbar-thin overflow-x-auto p-4 text-[13px] leading-relaxed font-mono [&_pre]:!bg-transparent [&_pre]:!m-0">
         {html ? (
           <div dangerouslySetInnerHTML={{ __html: html }} />
