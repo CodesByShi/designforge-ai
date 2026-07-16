@@ -17,7 +17,7 @@ export function PropsTable({ rows }: { rows: PropRow[] }) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
+  {(rows ?? []).map((row) => (
             <tr key={row.prop} className="border-t border-graphite-border">
               <td className="px-4 py-2.5 font-mono text-xs text-ember">{row.prop}</td>
               <td className="px-4 py-2.5 font-mono text-xs text-paper-dim">{row.type}</td>
