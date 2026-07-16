@@ -1,0 +1,29 @@
+# Getting Started
+
+DesignForge AI is a copy-paste component library — there's no npm package to install.
+Instead, you copy the source of any component from the [Library](/library) or the
+[Playground](/playground) directly into your project.
+
+## Installation
+
+1. Copy the component file (e.g. `Button.tsx`) into your project's `components/ui` folder.
+2. Install the peer dependencies it needs — most components only need `clsx`,
+   `tailwind-merge`, and `class-variance-authority`; a few use Radix UI primitives.
+3. Make sure the DesignForge design tokens exist in your `tailwind.config.ts`
+   (see the `ember`, `graphite`, `blueprint` colors in this project's config).
+
+## Usage example
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export function Example() {
+  return <Button variant="gradient">Ship it</Button>;
+}
+```
+
+## Accessibility notes
+
+Every component in the library ships with keyboard navigation, visible focus
+rings, and ARIA attributes where relevant. When you copy a component, keep
+these attributes intact — they aren't decorative.

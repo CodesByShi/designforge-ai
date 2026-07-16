@@ -1,0 +1,45 @@
+# Button
+
+The single reusable primitive behind every button style in DesignForge —
+Primary, Gradient, Ghost, Outline, Icon, and Loading are all variants or
+props of this one component.
+
+## Preview
+
+<ComponentPreview id="primary-button" />
+
+## Installation
+
+Copy `components/ui/button.tsx` into your project. It depends on
+`@radix-ui/react-slot` (for the `asChild` prop) and `class-variance-authority`.
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+<Button variant="primary" size="md">
+  Get Started
+</Button>
+```
+
+## Props
+
+<PropsTable
+  rows={[
+    { prop: "variant", type: "primary | gradient | outline | ghost | destructive | link", default: "primary" },
+    { prop: "size", type: "sm | md | lg | icon", default: "md" },
+    { prop: "isLoading", type: "boolean", default: "false" },
+    { prop: "leftIcon", type: "ReactNode", default: "—" },
+    { prop: "rightIcon", type: "ReactNode", default: "—" },
+    { prop: "asChild", type: "boolean", default: "false" },
+  ]}
+/>
+
+## Accessibility notes
+
+- Renders a native `<button>` by default, so it's focusable and operable
+  with Enter/Space out of the box.
+- `isLoading` sets `aria-busy` and disables the button so screen readers
+  don't announce a stale label mid-action.
+- Icon-only usage requires an explicit `aria-label` on the button.
